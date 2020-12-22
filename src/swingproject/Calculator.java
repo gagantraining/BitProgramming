@@ -17,7 +17,10 @@ import javax.swing.JButton;
 public class Calculator extends javax.swing.JFrame implements ActionListener{
     ArrayList<JButton> oprButs;
     ArrayList<JButton> valButs;
-    
+    double accumulator=0;
+    String opr=null;
+    double result;
+    JButton lastOpr;
     /**
      * Creates new form Calculator
      */
@@ -310,14 +313,50 @@ public class Calculator extends javax.swing.JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(oprButs.indexOf(lastOpr)!=-1 || lastOpr==butEqual){
+            disp.setText("");
+        }
         if(valButs.indexOf(e.getSource())!=-1){
+            if(e.getActionCommand().equals(".")){
+                if(disp.getText().indexOf(".")!=-1)
+                    return;
+            }
             disp.setText(disp.getText()+e.getActionCommand());
         }
         else if(oprButs.indexOf(e.getSource())!=-1){
-            System.out.println("Operation Buttons Pressed");
+            if(e.getActionCommand().equals("C")){
+                opr = null;
+                accumulator = 0;
+                result = 0;
+                disp.setText("");
+            }
+            if(opr==null){
+                accumulator = (disp.getText().length()==0)?result:Double.parseDouble(disp.getText());
+                opr = e.getActionCommand();
+            }else{
+                doOperation();
+                disp.setText(result+"");
+                opr = e.getActionCommand();
+            }
         }
         else{
-            System.out.println("Equal Button Pressed");
+            doOperation();
+            disp.setText(result+"");
+            opr = null;
         }
+        lastOpr = (JButton) e.getSource();
+    }
+    void doOperation(){
+            if(opr.equals("+")){
+                result = accumulator+Double.parseDouble(disp.getText());
+            }else if(opr.equals("-")){
+                result = accumulator-Double.parseDouble(disp.getText());
+            }else if(opr.equals("*")){
+                result = accumulator*Double.parseDouble(disp.getText());
+            }else if(opr.equals("/")){
+                result = accumulator/Double.parseDouble(disp.getText());
+            }
+            accumulator = result;
+            System.out.println(result);
     }
 }
