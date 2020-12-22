@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -340,6 +341,10 @@ public class Calculator extends javax.swing.JFrame implements ActionListener{
             }
         }
         else{
+            if(oprButs.indexOf(lastOpr)!=-1){     
+                JOptionPane.showMessageDialog(null,"Please Choose a Number");
+                return;
+            }
             doOperation();
             disp.setText(result+"");
             opr = null;
